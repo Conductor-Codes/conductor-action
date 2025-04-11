@@ -38,7 +38,7 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           conductor_llm_config: ${{ secrets.CONDUCTOR_LLM_CONFIG }}
-          conductor_api_key: ${{ CONDUCTOR_API_KEY }}
+          conductor_api_key: ${{ secrets.CONDUCTOR_API_KEY }}
 ```
 
 ## Configuration
