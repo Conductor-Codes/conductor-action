@@ -10,9 +10,17 @@ inputs:
     description: 'GitHub token for API access'
     required: true
     default: ${{ github.token }}
+  conductor_llm_config:
+    description: 'LLM configuration properties for Conductor (JSON object)'
+    required: true
+  conductor_api_key:
+    description: 'Conductor API Key credentials'
+    required: true
 
 runs:
   using: 'docker'
   image: 'docker://ghcr.io/conductor-codes/conductor:latest'
   env:
     GITHUB_TOKEN: ${{ inputs.github_token }}
+    CONDUCTOR_LLM_CONFIG: ${{ inputs.conductor_llm_config }}
+    CONDUCTOR_API_KEY: ${{ inputs.conductor_api_key }}
