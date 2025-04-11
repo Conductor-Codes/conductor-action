@@ -61,7 +61,7 @@ This GitHub Action is designed to work with minimal configuration needed:
 {
   "api_type": "gemini",
   "model": "gemini-2.5-pro-exp-03-25",
-  "api_key": "...",
+  "api_key": "..."
 }
 ```
 2. Create a repository secret named `CONDUCTOR_API_KEY` and enter in your Api Key for Conductor.
