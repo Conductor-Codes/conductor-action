@@ -51,6 +51,23 @@ The action requires the following inputs:
 | `conductor_llm_config` | JSON object containing credentials to authenticate with your LLM | Yes | N/A |
 | `conductor_api_key` | API Key to authenticate with Conductor | Yes | N/A |
 
+
+## Setup
+
+This GitHub Action is designed to work with minimal configuration needed:
+
+1. Create a repository secret named `CONDUCTOR_LLM_CONFIG` and input a JSON object containing your LLM authentication properties. Here's an example:
+```json
+{
+  "api_type": "gemini",
+  "model": "gemini-2.5-pro-exp-03-25",
+  "api_key": "...",
+}
+```
+2. Create a repository secret named `CONDUCTOR_API_KEY` and enter in your Api Key for Conductor.
+3. Done! No need to modify your codebase.
+
+
 ## How It Works
 
 The action:
@@ -59,13 +76,6 @@ The action:
 3. Analyzes the code changes in the PR for performance and accessibility
 4. Posts a review comment with findings
 
-## Minimal Configuration Setup
-
-This GitHub Action is designed to work immediately with minimal configuration needed:
-
-- You only need to add 2 repository secrets: CONDUCTOR_LLM_CONFIG and CONDUCTOR_API_KEY
-- No need to modify your codebase
-- Works out of the box with the standard GitHub token
 
 ## Example Review
 
