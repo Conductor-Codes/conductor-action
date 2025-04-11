@@ -25,9 +25,6 @@ on:
 
 jobs:
   code-review:
-    # Don't run on draft PRs
-    # Only run on issue comments that include '@conductor review'
-    if: github.event.pull_request.draft == false || ${{ github.event_name != 'issue_comment' || contains(github.event.comment.body, '@conductor review') }}
     runs-on: ubuntu-latest
     
     steps:
@@ -36,11 +33,12 @@ jobs:
         with:
           fetch-depth: 0  # Get complete history for better context
       
-      # Run Conductor code review
       - name: Conductor Code Review
         uses: conductor-codes/conductor-action@v1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          conductor_llm_config: ${{ secrets.CONDUCTOR_LLM_CONFIG }}
+          conductor_api_key: ${{ CONDUCTOR_API_KEY }}
 ```
 
 ## Configuration
@@ -50,21 +48,23 @@ The action requires the following inputs:
 | Input | Description | Required | Default |
 |-------|-------------|----------|---------|
 | `github_token` | GitHub token for API access | Yes | `${{ github.token }}` |
+| `conductor_llm_config` | JSON object containing credentials to authenticate with your LLM | Yes | N/A |
+| `conductor_api_key` | API Key to authenticate with Conductor | Yes | N/A |
 
 ## How It Works
 
 The action:
 1. Runs on new PRs, reopened PRs, and when a PR changes from draft to ready
 2. Also runs when someone comments with `@conductor review`
-3. Analyzes the code changes in the PR
+3. Analyzes the code changes in the PR for performance and accessibility
 4. Posts a review comment with findings
 
-## Zero Configuration Setup
+## Minimal Configuration Setup
 
-This GitHub Action is designed to work immediately with no configuration needed:
+This GitHub Action is designed to work immediately with minimal configuration needed:
 
+- You only need to add 2 repository secrets: CONDUCTOR_LLM_CONFIG and CONDUCTOR_API_KEY
 - No need to modify your codebase
-- No configuration files to create
 - Works out of the box with the standard GitHub token
 
 ## Example Review
@@ -72,12 +72,9 @@ This GitHub Action is designed to work immediately with no configuration needed:
 When a PR is opened, Conductor will automatically analyze the code and post a comment like:
 
 ```
-# Conductor Code Review
-
 This is a code review.
 
-## Diff Stats
-Diff size: 1253 characters
+Review by Conductor
 ```
 
 ## License
