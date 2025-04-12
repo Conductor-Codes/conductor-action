@@ -25,6 +25,7 @@ on:
 
 jobs:
   code-review:
+    if: ${{ github.event_name != 'issue_comment' || contains(github.event.comment.body, '@conductor review') }}
     runs-on: ubuntu-latest
     
     steps:
