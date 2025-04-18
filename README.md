@@ -25,7 +25,7 @@ on:
 
 jobs:
   code-review:
-    if: ${{ github.event_name != 'issue_comment' || contains(github.event.comment.body, '@conductor review') }}
+    if: ${{ github.event_name != 'issue_comment' || contains(github.event.comment.body, '@conductor-codes review') }}
     runs-on: ubuntu-latest
     
     steps:
