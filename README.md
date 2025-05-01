@@ -29,9 +29,24 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
+      - name: Determine PR ref
+        if: github.event_name == 'issue_comment'
+        id: pr
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const pr = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number
+            });
+            core.setOutput('head_ref', pr.data.head.ref);
+
       - name: Checkout code
         uses: actions/checkout@v3
         with:
+          ref: ${{ github.head_ref || steps.pr.outputs.head_ref }}
           fetch-depth: 0  # Get complete history for better context
       
       - name: Conductor Code Review
