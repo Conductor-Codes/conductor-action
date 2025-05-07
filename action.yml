@@ -19,7 +19,7 @@ inputs:
 
 runs:
   using: 'docker'
-  image: 'docker://ghcr.io/conductor-codes/conductor:latest'
+  image: 'docker://ghcr.io/conductor-codes/conductor:v1'
   env:
     GITHUB_TOKEN: ${{ inputs.github_token }}
     CONDUCTOR_LLM_CONFIG: ${{ inputs.conductor_llm_config }}
