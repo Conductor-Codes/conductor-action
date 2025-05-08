@@ -6,7 +6,7 @@ This GitHub Action automatically reviews Pull Requests using Conductor.
 
 - Automatic code reviews on new PRs
 - Skips draft PRs
-- Runs on comments with `@conductor review`
+- Runs on comments with `@conductor-codes review`
 - Avoids duplicate reviews
 - No configuration needed in your codebase
 
@@ -83,6 +83,48 @@ This GitHub Action is designed to work with minimal configuration needed:
 2. Create a repository secret named `CONDUCTOR_API_KEY` and enter in your Api Key for Conductor.
 3. Done! No need to modify your codebase.
 
+_Note: If you're using AWS Bedrock read the AWS Bedrock section below._
+
+
+### AWS Bedrock Setup
+
+If you're using AWS Bedrock to authenticate with your LLM you can do so in one of two ways:
+
+1. Through an IAM role (recommended)
+2. Through a user with a key & secret
+
+#### IAM Role Configuration (recommended)
+
+1. Create a trust policy for GitHub Actions using OIDC federation.
+2. Create an IAM role with `bedrock:InvokeModel` and `bedrock:InvokeModelWithResponseStream` permissions for your chosen model.
+3. Add the `aws-actions/configure-aws-credentials@v4` step to your GitHub Action created above (this should be added above the `Conductor Code Review` step):
+```yaml
+- name: Configure AWS credentials via OIDC
+  uses: aws-actions/configure-aws-credentials@v4
+  with:
+    role-to-assume: arn:aws:iam::<account-id>:role/<role-name>
+    aws-region: <region>
+```
+4. Set only the `api_type` and `model` in the `CONDUCTOR_LLM_CONFIG` repository secret:
+```json
+{
+  "api_type": "bedrock",
+  "model": "us.anthropic.claude-3-7-sonnet-20250219-v1:0"
+}
+```
+
+#### Key & Secret Configuration
+
+1. Set the AWS Access Key & AWS Secret Key in the `CONDUCTOR_LLM_CONFIG` repository secret.
+```json
+{
+  "api_type": "bedrock",
+  "model": "us.anthropic.claude-3-7-sonnet-20250219-v1:0",
+  "aws_access_key": "...",
+  "aws_secret_key": "...",
+  "aws_region": "..."
+}
+```
 
 ## How It Works
 
@@ -102,6 +144,7 @@ This is a code review.
 
 Review by Conductor
 ```
+
 
 ## License
 
